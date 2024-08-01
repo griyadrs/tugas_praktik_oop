@@ -2,63 +2,61 @@
 require_once 'Person.php';
 require_once 'Book.php';
 
-class Member extends Person {
+class Member extends Person
+{
     private string $memberID;
     private array $borrowedBooks = [];
 
     // Initializing name and memberID
-    public function __construct($name, $memberID) 
+    public function __construct(string $name, string $memberID)
     {
         parent::__construct($name);
         $this->memberID = $memberID;
     }
 
     // Borrow book Method in class Book
-    public function borrowBook(Book $book)
+    public function borrowBook(&$library, Book $book)
     {
-        // Calls the borrowBook ​​method of the Book object. If the loan is successful
-        if ($book->borrowBook()) {
+        if (array_search($book, $library->books)) {
 
-            // Add the borrowed Book object to the $borrowedBooks array.
-            $this->borrowedBooks[] = $book;
+            // Calls the borrowBook ​​method of the Book object. If the loan is successful
+            if ($book->borrowBook()) {
 
-            return true;
-        }
+                // Add the borrowed Book object to the $borrowedBooks array.
+                $this->borrowedBooks[] = $book;
 
-        return false;
+                return true;
+            }
+
+            return false;
+        }   
     }
 
     // Return book Method in class Book
-    public function returnBook(Book $book) 
+    public function returnBook(Book $book)
     {
-
         // Loop through all books borrowed by members
-        foreach ($this->borrowedBooks as $key => $borrowedBook) {
-
+        foreach ($this->borrowedBooks as $key => $borrowedBook) :
             /* Check the ISBN of the book you are borrowing 
             is the same as the ISBN of the book you want to return*/
-            if ($borrowedBook->getBookInfo()['isbn'] == $book->getBookInfo()['isbn']) {
-
+            if ($borrowedBook->getBookInfo()['isbn'] === $book->getBookInfo()['isbn']) {
                 // Unset the book from the borrowedBooks array
                 unset($this->borrowedBooks[$key]);
-                
-                // Increase the number of copies available
                 $book->returnBook();
-                
+
                 return true;
             }
-        }
+        endforeach;
 
         return false;
     }
 
-    public function getMemberInfo() 
+    public function getMemberInfo()
     {
-        
         return [
             'name' => $this->name,
             'memberID' => $this->memberID,
-            'borrowedBooks' => array_map(function($book) {
+            'borrowedBooks' => array_map(function ($book) {
                 return $book->getBookInfo();
             }, $this->borrowedBooks)
         ];

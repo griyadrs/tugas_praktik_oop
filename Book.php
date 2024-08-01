@@ -1,20 +1,26 @@
 <?php
-class Book {
+require_once 'Library.php';
+class Book 
+{
 
     // General Types of Book
-    private string $title;
-    private string $author;
-    private string $isbn;
-    private int $publicationYear;
-    private int $availableCopies;
+    private string $title,
+        $author,
+        $isbn;
+    private int $publicationYear,
+        $availableCopies;
 
     // initialize Book Properties
-    public function __construct(string $title, string $author,
-        string $isbn, int $publicationYear, int $availableCopies)
-    {
-        $this->title  = $title;
-        $this->author = $author;
-        $this->isbn   = $isbn;
+    public function __construct(
+        string $title, 
+        string $author,
+        string $isbn, 
+        int $publicationYear, 
+        int $availableCopies
+    ) {
+        $this->title           = $title;
+        $this->author          = $author;
+        $this->isbn            = $isbn;
         $this->publicationYear = $publicationYear;
         $this->availableCopies = $availableCopies;
     }
@@ -23,7 +29,7 @@ class Book {
     public function borrowBook() 
     {
         if ($this->availableCopies > 0) {
-            $this->availableCopies --;
+            $this->availableCopies--;
             
             return true;
         }
@@ -40,11 +46,10 @@ class Book {
     // Return Detail of Book
     public function getBookInfo()
     {
-
         return [
-            'title'  => $this->title,
-            'author' => $this->author,
-            'isbn'   => $this->isbn,
+            'title'           => $this->title,
+            'author'          => $this->author,
+            'isbn'            => $this->isbn,
             'publicationYear' => $this->publicationYear,
             'availableCopies' => $this->availableCopies
         ];

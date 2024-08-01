@@ -1,8 +1,9 @@
 <?php
-class Person {
+class Person 
+{
     protected string $name;
 
-    // Initializing  
+    // Initializing 
     public function __construct($name) 
     {
         $this->name = $name;
@@ -11,7 +12,6 @@ class Person {
     // Return Name
     public function getName() 
     {
-
         return $this->name;
     }
 }
